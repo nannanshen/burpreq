@@ -37,7 +37,7 @@ public class ActiveScanner implements IScannerCheck {
         for(IHttpRequestResponse req : reqs){
             ReqDocumentListTree ReqDocumentListTree = new ReqDocumentListTree(extensionTab);
             IExtensionHelpers helpers = BurpExtender.getHelpers();
-            ExtensionTab.ReqTableData mainReqData = new ExtensionTab.ReqTableData(false, ReqDocumentListTree,requestUrl, String.valueOf(helpers.analyzeResponse(req.getResponse()).getStatusCode()),String.valueOf(helpers.analyzeRequest(req).getMethod()), req,null,null,null);
+            ExtensionTab.ReqTableData mainReqData = new ExtensionTab.ReqTableData(false, ReqDocumentListTree,requestUrl, String.valueOf(helpers.analyzeResponse(req.getResponse()).getStatusCode()),String.valueOf(helpers.analyzeRequest(req).getMethod()), req,"test",String.valueOf(req.getResponse().toString().length()-helpers.analyzeResponse(req.getResponse()).getBodyOffset()),null);
             ArrayList<ExtensionTab.ReqTableData> subReqData = new ArrayList<>();
             mainReqData.setTreeStatus(Constants.TREE_STATUS_COLLAPSE);
             ReqDocumentListTree.setMainReqData(mainReqData);
