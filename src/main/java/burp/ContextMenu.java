@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 public class ContextMenu implements IContextMenuFactory {
@@ -47,8 +48,7 @@ public class ContextMenu implements IContextMenuFactory {
                 IHttpRequestResponse[] httpRequestResponses = invocation.getSelectedMessages();
 
                 for (IHttpRequestResponse httpRequestResponse : httpRequestResponses) {
-                    //ArrayList<ApiType> apiTypes = passiveScanner.getApiScanner().detect(httpRequestResponse, false);
-                    //passiveScanner.parseApiDocument(apiTypes);
+                    activeScanner.doActiveScan(httpRequestResponse,null);
                 }
                 return null;
             }, Executor.getExecutor());

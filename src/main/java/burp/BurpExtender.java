@@ -57,7 +57,7 @@ public class BurpExtender implements IBurpExtender {
         callbacks.setExtensionName(FULLNAME);
         BurpExtender.stdout.println("===================================");
         BurpExtender.stdout.println(String.format("%s load success!", FULLNAME));
-        BurpExtender.stdout.println("Author: yulige,rmb122");
+        BurpExtender.stdout.println("Author: nannanshen");
         BurpExtender.stdout.println("===================================");
     }
 }

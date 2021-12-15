@@ -48,7 +48,7 @@ public class ExtensionTab extends AbstractTableModel implements ITab, IMessageEd
                 upScrollPane = new JScrollPane(ReqTable);
 
                 // 前两列设置宽度 30px
-                for (int i = 0; i < 2; i++) {
+                for (int i = 0; i < 1; i++) {
                     ReqTable.getColumnModel().getColumn(i).setMaxWidth(30);
                 }
 
@@ -128,17 +128,17 @@ public class ExtensionTab extends AbstractTableModel implements ITab, IMessageEd
             case 0:
                 return " ";
             case 1:
-                return "#";
+                return "URL";
             case 2:
-                return "Req";
+                return "statusCode";
             case 3:
-                return "Status Code";
+                return "reqType";
             case 4:
-                return "Event Name";
+                return "payloadStr";
             case 5:
-                return "Unauth";
+                return "resLen";
             case 6:
-                return "Scan Time";
+                return "scanTime";
         }
         return null;
     }
@@ -159,14 +159,12 @@ public class ExtensionTab extends AbstractTableModel implements ITab, IMessageEd
             case 2:
                 return data.statusCode;
             case 3:
-                return data.ReqType;
+                return data.reqType;
             case 4:
-                return data.ReqType;
-            case 5:
                 return data.payloadStr;
-            case 6:
+            case 5:
                 return data.resLen;
-            case 7:
+            case 6:
                 return data.scanTime;
         }
         return null;
@@ -208,7 +206,7 @@ public class ExtensionTab extends AbstractTableModel implements ITab, IMessageEd
     public static class ReqTableData {
         final String Url;
         final String statusCode;
-        final String ReqType;
+        final String reqType;
         final IHttpRequestResponse requestResponse;
         final String payloadStr;
         final String resLen;
@@ -217,12 +215,12 @@ public class ExtensionTab extends AbstractTableModel implements ITab, IMessageEd
         final ReqDocumentListTree parentListTree;
         private String treeStatus = "";
 
-        public ReqTableData(Boolean isSubData, ReqDocumentListTree parentListTree, String Url, String statusCode, String ReqType, IHttpRequestResponse requestResponse,String payloadStr, String resLen,String scanTime) {
+        public ReqTableData(Boolean isSubData, ReqDocumentListTree parentListTree, String Url, String statusCode, String reqType, IHttpRequestResponse requestResponse,String payloadStr, String resLen,String scanTime) {
             this.isSubData = isSubData;
             this.parentListTree = parentListTree;
             this.Url = Url;
             this.statusCode = statusCode;
-            this.ReqType = ReqType;
+            this.reqType = reqType;
             this.requestResponse = requestResponse;
             this.payloadStr = payloadStr;
             this.resLen = resLen;

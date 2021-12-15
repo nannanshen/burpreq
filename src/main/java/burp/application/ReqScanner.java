@@ -17,16 +17,21 @@ public class ReqScanner {
 
     }
 
-    public Map.Entry<Long, IHttpRequestResponse> detect(IHttpRequestResponse baseRequestResponse) {
-        List<IHttpRequestResponse> reqs = new ArrayList<>();
-        List<Long> scantimes = new ArrayList<>();
-        for(int i=0;i<3;i++){
-            long startTime = System.nanoTime();
-            IHttpRequestResponse newres = baseRequestResponse.
-            reqs.add(newres);
+    private final String[] payloads = new String[]{
+            "",
+            "'",
+            "' and '1'='1",
+            "' or '1'='1"
+    };
 
+    public List<Map.Entry<Map.Entry<Float,String>, IHttpRequestResponse>> detect(IHttpRequestResponse baseRequestResponse) {
+        ArrayList<Map.Entry<Map.Entry<Float,String>, IHttpRequestResponse>> s = new ArrayList();
+        for(String payload : payloads){
+            long startTime = System.currentTimeMillis();
+            IHttpRequestResponse newHttpRequestResponse = BurpExtender.getCallbacks().makeHttpRequest(baseRequestResponse.getHttpService(), baseRequestResponse.getRequest());
+            long endTime = System.currentTimeMillis();
+            s.add(new AbstractMap.SimpleImmutableEntry<Map.Entry<Float,String>, IHttpRequestResponse>(new AbstractMap.SimpleImmutableEntry<Float,String>((float)(endTime - startTime)/1000,payload), newHttpRequestResponse));
         }
-        return new AbstractMap.SimpleImmutableEntry<Long, IHttpRequestResponse>(
-                System.nanoTime() - startTime, response);
+        return s;
     }
 }
