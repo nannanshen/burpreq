@@ -119,7 +119,7 @@ public class ExtensionTab extends AbstractTableModel implements ITab, IMessageEd
 
     @Override
     public int getColumnCount() {
-        return 7;
+        return 8;
     }
 
     @Override
@@ -134,10 +134,12 @@ public class ExtensionTab extends AbstractTableModel implements ITab, IMessageEd
             case 3:
                 return "reqType";
             case 4:
-                return "payloadStr";
+                return "paramer";
             case 5:
-                return "resLen";
+                return "payloadStr";
             case 6:
+                return "resLen";
+            case 7:
                 return "scanTime";
         }
         return null;
@@ -161,10 +163,12 @@ public class ExtensionTab extends AbstractTableModel implements ITab, IMessageEd
             case 3:
                 return data.reqType;
             case 4:
-                return data.payloadStr;
+                return data.paramerStr;
             case 5:
-                return data.resLen;
+                return data.payloadStr;
             case 6:
+                return data.resLen;
+            case 7:
                 return data.scanTime;
         }
         return null;
@@ -208,6 +212,7 @@ public class ExtensionTab extends AbstractTableModel implements ITab, IMessageEd
         final String statusCode;
         final String reqType;
         final IHttpRequestResponse requestResponse;
+        final String paramerStr;
         final String payloadStr;
         final String resLen;
         final String scanTime;
@@ -215,13 +220,14 @@ public class ExtensionTab extends AbstractTableModel implements ITab, IMessageEd
         final ReqDocumentListTree parentListTree;
         private String treeStatus = "";
 
-        public ReqTableData(Boolean isSubData, ReqDocumentListTree parentListTree, String Url, String statusCode, String reqType, IHttpRequestResponse requestResponse,String payloadStr, String resLen,String scanTime) {
+        public ReqTableData(Boolean isSubData, ReqDocumentListTree parentListTree, String Url, String statusCode, String reqType, IHttpRequestResponse requestResponse,String paramerStr,String payloadStr, String resLen,String scanTime) {
             this.isSubData = isSubData;
             this.parentListTree = parentListTree;
             this.Url = Url;
             this.statusCode = statusCode;
             this.reqType = reqType;
             this.requestResponse = requestResponse;
+            this.paramerStr = paramerStr;
             this.payloadStr = payloadStr;
             this.resLen = resLen;
             this.scanTime = scanTime;

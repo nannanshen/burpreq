@@ -1,5 +1,5 @@
 package burp;
-
+import burp.ui.GetUserInput;
 import burp.application.ReqScanner;
 import burp.ui.ReqDocumentListTree;
 import burp.ui.ExtensionTab;
@@ -23,10 +23,22 @@ public class ActiveScanner implements IScannerCheck {
         return ReqScanner;
     }
 
+
+
     public IExtensionHelpers helpers = BurpExtender.getHelpers();
 
     @Override
     public List<IScanIssue> doActiveScan(IHttpRequestResponse httpRequestResponse, IScannerInsertionPoint insertionPoint) {
+        GetUserInput GetUserInput = new GetUserInput();
+        while (true){
+            if (GetUserInput.getisOk()){
+                break;
+            }
+        }
+        String paramer = GetUserInput.getText();
+        if(paramer == ""){
+            return null;
+        }
         URL httpRequestURL = BurpExtender.getHelpers().analyzeRequest(httpRequestResponse).getUrl();
         List<Map.Entry<Map.Entry<Float,String>, IHttpRequestResponse>> reqs = this.ReqScanner.detect(httpRequestResponse);
         ExtensionTab extensionTab = BurpExtender.getExtensionTab();
@@ -37,6 +49,7 @@ public class ActiveScanner implements IScannerCheck {
                 String.valueOf(helpers.analyzeResponse(httpRequestResponse.getResponse()).getStatusCode()),
                 String.valueOf(helpers.analyzeRequest(httpRequestResponse).getMethod()),
                 httpRequestResponse,
+                paramer,
                 "none",
                 String.valueOf(httpRequestResponse.getResponse().length-helpers.analyzeResponse(httpRequestResponse.getResponse()).getBodyOffset()),
                 "none");
@@ -54,6 +67,7 @@ public class ActiveScanner implements IScannerCheck {
                     String.valueOf(helpers.analyzeResponse(req.getResponse()).getStatusCode()),
                     String.valueOf(helpers.analyzeRequest(req).getMethod()),
                     httpRequestResponse,
+                    paramer,
                     payload,
                     String.valueOf(req.getResponse().length-helpers.analyzeResponse(req.getResponse()).getBodyOffset()),
                     scantime
