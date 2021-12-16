@@ -40,7 +40,10 @@ public class ActiveScanner implements IScannerCheck {
             return null;
         }
         URL httpRequestURL = BurpExtender.getHelpers().analyzeRequest(httpRequestResponse).getUrl();
-        List<Map.Entry<Map.Entry<Float,String>, IHttpRequestResponse>> reqs = this.ReqScanner.detect(httpRequestResponse);
+        List<Map.Entry<Map.Entry<Float,String>, IHttpRequestResponse>> reqs = this.ReqScanner.detect(httpRequestResponse,paramer);
+        if(reqs == null){
+            return null;
+        }
         ExtensionTab extensionTab = BurpExtender.getExtensionTab();
         ReqDocumentListTree ReqDocumentListTree = new ReqDocumentListTree(extensionTab);
         ExtensionTab.ReqTableData mainReqData = new ExtensionTab.ReqTableData(false,
@@ -51,7 +54,7 @@ public class ActiveScanner implements IScannerCheck {
                 httpRequestResponse,
                 paramer,
                 "none",
-                String.valueOf(httpRequestResponse.getResponse().length-helpers.analyzeResponse(httpRequestResponse.getResponse()).getBodyOffset()),
+                String.valueOf(httpRequestResponse.getResponse().length),
                 "none");
         ArrayList<ExtensionTab.ReqTableData> subReqData = new ArrayList<>();
         mainReqData.setTreeStatus(Constants.TREE_STATUS_COLLAPSE);
@@ -66,10 +69,10 @@ public class ActiveScanner implements IScannerCheck {
                     httpRequestURL.toString(),
                     String.valueOf(helpers.analyzeResponse(req.getResponse()).getStatusCode()),
                     String.valueOf(helpers.analyzeRequest(req).getMethod()),
-                    httpRequestResponse,
+                    req,
                     paramer,
                     payload,
-                    String.valueOf(req.getResponse().length-helpers.analyzeResponse(req.getResponse()).getBodyOffset()),
+                    String.valueOf(req.getResponse().length),
                     scantime
                     );
 
