@@ -36,7 +36,7 @@ public class ActiveScanner implements IScannerCheck {
             }
         }
         String paramer = GetUserInput.getText();
-        if(paramer == ""){
+        if(paramer.equals("")){
             return null;
         }
         URL httpRequestURL = BurpExtender.getHelpers().analyzeRequest(httpRequestResponse).getUrl();
