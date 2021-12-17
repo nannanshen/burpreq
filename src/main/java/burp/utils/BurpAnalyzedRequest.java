@@ -111,10 +111,20 @@ public class BurpAnalyzedRequest {
      */
     private byte[] buildHttpMessage(IParameter p, String payload) {
         String requestBody = this.customBurpHelpers.getHttpRequestBody(this.requestResponse().getRequest());
+        String pl;
+        String pj1;
+        String pj2;
+        if(p.getValue().equals("")){
+            pl = "\"" + p.getName() + "\"" + ":" + "\"" + payload + "\"";
+            pj1 = "\"" + p.getName() + "\"" + ":" + "\"\"";
+            pj2 = pj1;
+        }else {
+            pl = "\"" + p.getName() + "\"" + ":" + "\"" + p.getValue() +payload + "\"";
+            pj1 = "\"" + p.getName() + "\"" + ":" + "\"" + p.getValue() + "\"";
+            pj2 = "\"" + p.getName() + "\"" + ":" + p.getValue();
+        }
 
-        String pl = "\"" + p.getName() + "\"" + ":" + "\"" + p.getValue() +payload + "\"";
-        String pj1 = "\"" + p.getName() + "\"" + ":" + "\"" + p.getValue() + "\"";
-        String pj2 = "\"" + p.getName() + "\"" + ":" + p.getValue();
+
 
         requestBody = requestBody.replace(pj1, pl);
         requestBody = requestBody.replace(pj2, pl);

@@ -41,13 +41,13 @@ public class ActiveScanner implements IScannerCheck {
         ExtensionTab.ReqTableData mainReqData = new ExtensionTab.ReqTableData(false,
                 ReqDocumentListTree,
                 httpRequestURL.toString(),
-                String.valueOf(helpers.analyzeResponse(httpRequestResponse.getResponse()).getStatusCode()),
+                "unknow",
                 String.valueOf(helpers.analyzeRequest(httpRequestResponse).getMethod()),
                 httpRequestResponse,
                 paramer,
                 "none",
-                String.valueOf(httpRequestResponse.getResponse().length),
-                "none");
+                "unknow",
+                "unknow");
         ArrayList<ExtensionTab.ReqTableData> subReqData = new ArrayList<>();
         mainReqData.setTreeStatus(Constants.TREE_STATUS_COLLAPSE);
         ReqDocumentListTree.setMainReqData(mainReqData);
