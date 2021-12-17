@@ -1,14 +1,12 @@
 package burp;
-import burp.ui.GetUserInput;
 import burp.application.ReqScanner;
 import burp.ui.ReqDocumentListTree;
 import burp.ui.ExtensionTab;
-import burp.utils.CommonUtils;
 import burp.utils.Constants;
 
+import javax.swing.*;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
@@ -29,14 +27,8 @@ public class ActiveScanner implements IScannerCheck {
 
     @Override
     public List<IScanIssue> doActiveScan(IHttpRequestResponse httpRequestResponse, IScannerInsertionPoint insertionPoint) {
-        GetUserInput GetUserInput = new GetUserInput();
-        while (true){
-            if (GetUserInput.getisOk()){
-                break;
-            }
-        }
-        String paramer = GetUserInput.getText();
-        if(paramer.equals("")){
+        String paramer = JOptionPane.showInputDialog(null, "请输入要测试的参数：\n", "参数", JOptionPane.PLAIN_MESSAGE);
+        if(paramer==null || paramer.equals("")){
             return null;
         }
         URL httpRequestURL = BurpExtender.getHelpers().analyzeRequest(httpRequestResponse).getUrl();
