@@ -52,6 +52,7 @@ public class ActiveScanner implements IScannerCheck {
         mainReqData.setTreeStatus(Constants.TREE_STATUS_COLLAPSE);
         ReqDocumentListTree.setMainReqData(mainReqData);
         ReqDocumentListTree.setSubReqData(subReqData);
+        extensionTab.add(ReqDocumentListTree);
         for(Map.Entry<Map.Entry<Float,String>, IHttpRequestResponse> re : reqs){
             IHttpRequestResponse req = re.getValue();
             String scantime = String.valueOf(re.getKey().getKey());
@@ -70,7 +71,7 @@ public class ActiveScanner implements IScannerCheck {
 
             subReqData.add(currentData);
         }
-        extensionTab.add(ReqDocumentListTree);
+        //extensionTab.add(ReqDocumentListTree);
 
         return  null;
     }

@@ -24,6 +24,10 @@ public class ReqDocumentListTree {
         return this.mainReqData;
     }
 
+    public ArrayList<ExtensionTab.ReqTableData> getSubReqData() {
+        return this.subReqData;
+    }
+
     public void setMainReqData(ExtensionTab.ReqTableData mainReqData) {
         this.mainReqData = mainReqData;
     }

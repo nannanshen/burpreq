@@ -8,7 +8,10 @@ import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableModel;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class ExtensionTab extends AbstractTableModel implements ITab, IMessageEditorController {
@@ -70,6 +73,8 @@ public class ExtensionTab extends AbstractTableModel implements ITab, IMessageEd
                         return c;
                     }
                 });
+
+                ReqTable.registerListeners();
 
                 // 请求与响应界面的分隔面板规则
                 downSplitPane = new JSplitPane();
@@ -252,6 +257,32 @@ public class ExtensionTab extends AbstractTableModel implements ITab, IMessageEd
             return this.tableData;
         }
 
+        public void removeRow(int row) {
+            synchronized (ReqTable.this) {
+                ReqTableData dataEntry = ExtensionTab.ReqTable.this.tableData.get(convertRowIndexToModel(row));
+                int selfIndex = ExtensionTab.ReqTable.this.tableData.indexOf(dataEntry.parentListTree.getMainReqData());
+                if (dataEntry.isSubData) {
+                    dataEntry.parentListTree.getSubReqData().remove(dataEntry);
+                    ExtensionTab.ReqTable.this.tableData.remove(row);
+                    int _id = ExtensionTab.ReqTable.this.tableData.size();
+                    fireTableRowsDeleted(selfIndex, _id);
+                }else {
+                    int _id = ExtensionTab.ReqTable.this.tableData.size();
+                    if(dataEntry.parentListTree.getExpandStatus()){
+                        for (int i = 0; i < dataEntry.parentListTree.getSubReqData().size(); i++) {
+                            ExtensionTab.ReqTable.this.tableData.remove(selfIndex + 1);
+                        }
+                    }
+                    ExtensionTab.ReqTable.this.tableData.remove(selfIndex);
+                    dataEntry.parentListTree.setMainReqData(null);
+                    dataEntry.parentListTree.getSubReqData().clear();
+                    fireTableRowsDeleted(selfIndex,_id);
+
+                }
+
+            }
+        }
+
         public void changeSelection(int row, int col, boolean toggle, boolean extend) {
             ReqTableData dataEntry = ExtensionTab.ReqTable.this.tableData.get(convertRowIndexToModel(row));
 
@@ -267,6 +298,29 @@ public class ExtensionTab extends AbstractTableModel implements ITab, IMessageEd
             responseTextEditor.setMessage(dataEntry.requestResponse.getResponse(), false);
             currentlyDisplayedItem = dataEntry.requestResponse;
             super.changeSelection(row, col, toggle, extend);
+        }
+        public void registerListeners() {
+            ReqTable.this.setRowSelectionAllowed(true);
+            this.addMouseListener(new MouseAdapter() {
+
+                @Override
+                public void mouseReleased(MouseEvent e) {//在windows中触发,因为isPopupTrigger在windows中是在鼠标释放是触发的，而在mac中，是鼠标点击时触发的。
+                    //https://stackoverflow.com/questions/5736872/java-popup-trigger-in-linux
+                    if (SwingUtilities.isRightMouseButton(e)) {
+                        if (e.isPopupTrigger() && e.getComponent() instanceof JTable) {
+                            //getSelectionModel().setSelectionInterval(rows[0], rows[1]);
+                            int[] rows = getSelectedRows();
+                            int col = ((ReqTable) e.getSource()).columnAtPoint(e.getPoint()); // 获得列位置
+                            int modelCol = ReqTable.this.convertColumnIndexToModel(col);
+                            if (rows.length > 0) {
+                                int[] modelRows = ReqTable.getSelectedRows();
+                                new LineEntryMenu(ReqTable.this, modelRows, modelCol).show(e.getComponent(), e.getX(), e.getY());
+                            } else {
+                            }
+                        }
+                    }
+                }
+            });
         }
     }
 }
