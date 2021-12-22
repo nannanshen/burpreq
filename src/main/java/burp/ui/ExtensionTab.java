@@ -124,7 +124,7 @@ public class ExtensionTab extends AbstractTableModel implements ITab, IMessageEd
 
     @Override
     public int getColumnCount() {
-        return 8;
+        return 9;
     }
 
     @Override
@@ -133,18 +133,20 @@ public class ExtensionTab extends AbstractTableModel implements ITab, IMessageEd
             case 0:
                 return " ";
             case 1:
-                return "URL";
+                return "id";
             case 2:
-                return "statusCode";
+                return "URL";
             case 3:
-                return "reqType";
+                return "statusCode";
             case 4:
-                return "paramer";
+                return "reqType";
             case 5:
-                return "payloadStr";
+                return "paramer";
             case 6:
-                return "resLen";
+                return "payloadStr";
             case 7:
+                return "resLen";
+            case 8:
                 return "scanTime";
         }
         return null;
@@ -162,18 +164,20 @@ public class ExtensionTab extends AbstractTableModel implements ITab, IMessageEd
             case 0:
                 return data.treeStatus;
             case 1:
-                return data.Url;
+                return data.id;
             case 2:
-                return data.statusCode;
+                return data.Url;
             case 3:
-                return data.reqType;
+                return data.statusCode;
             case 4:
-                return data.paramerStr;
+                return data.reqType;
             case 5:
-                return data.payloadStr;
+                return data.paramerStr;
             case 6:
-                return data.resLen;
+                return data.payloadStr;
             case 7:
+                return data.resLen;
+            case 8:
                 return data.scanTime;
         }
         return null;
@@ -213,6 +217,7 @@ public class ExtensionTab extends AbstractTableModel implements ITab, IMessageEd
      * 界面显示数据存储模块
      */
     public static class ReqTableData {
+        final String id;
         final String Url;
         final String statusCode;
         final String reqType;
@@ -225,9 +230,10 @@ public class ExtensionTab extends AbstractTableModel implements ITab, IMessageEd
         final ReqDocumentListTree parentListTree;
         private String treeStatus = "";
 
-        public ReqTableData(Boolean isSubData, ReqDocumentListTree parentListTree, String Url, String statusCode, String reqType, IHttpRequestResponse requestResponse,String paramerStr,String payloadStr, String resLen,String scanTime) {
+        public ReqTableData(Boolean isSubData, ReqDocumentListTree parentListTree,String id, String Url, String statusCode, String reqType, IHttpRequestResponse requestResponse,String paramerStr,String payloadStr, String resLen,String scanTime) {
             this.isSubData = isSubData;
             this.parentListTree = parentListTree;
+            this.id = id;
             this.Url = Url;
             this.statusCode = statusCode;
             this.reqType = reqType;

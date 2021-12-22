@@ -8,6 +8,7 @@ import burp.utils.Executor;
 import javax.swing.*;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
@@ -53,6 +54,7 @@ public class ActiveScanner implements IScannerCheck {
         ReqDocumentListTree ReqDocumentListTree = new ReqDocumentListTree(extensionTab);
         ExtensionTab.ReqTableData mainReqData = new ExtensionTab.ReqTableData(false,
                 ReqDocumentListTree,
+                "none",
                 httpRequestURL.toString(),
                 "unknow",
                 String.valueOf(helpers.analyzeRequest(httpRequestResponse).getMethod()),
@@ -68,8 +70,10 @@ public class ActiveScanner implements IScannerCheck {
         extensionTab.add(ReqDocumentListTree);
 
 
-        for(String payload : Constants.payloads){
+        for(Map.Entry<String, String> payloadMap : Constants.payloadsMap.entrySet()){
             CompletableFuture.supplyAsync(() -> {
+                String payload = payloadMap.getValue();
+                String id = payloadMap.getKey();
                 Map.Entry<Map.Entry<Float,String>, IHttpRequestResponse> re = this.ReqScanner.detect(pa,httpRequestResponse,paramer,payload);
                 if(re == null){
                     return null;
@@ -82,6 +86,7 @@ public class ActiveScanner implements IScannerCheck {
                 int httpResponseBodyLength = req.getResponse().length - httpResponseBodyOffset;
                 ExtensionTab.ReqTableData currentData = new ExtensionTab.ReqTableData(true,
                         ReqDocumentListTree,
+                        id,
                         httpRequestURL.toString(),
                         String.valueOf(helpers.analyzeResponse(req.getResponse()).getStatusCode()),
                         String.valueOf(helpers.analyzeRequest(req).getMethod()),

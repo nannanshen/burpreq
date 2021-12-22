@@ -4,6 +4,7 @@ package burp.ui;
 import burp.utils.Constants;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class ReqDocumentListTree {
@@ -52,6 +53,7 @@ public class ReqDocumentListTree {
             List<ExtensionTab.ReqTableData> ReqTableData = this.parent.getReqTable().getTableData();
             int selfIndex = ReqTableData.indexOf(this.mainReqData);
             int mysize = subReqData.size();
+            subReqData.sort(Comparator.comparing(Bean->Bean.id));
             setSize(mysize);
             for (int i = 0; i < mysize; i++) {
                 ExtensionTab.ReqTableData data = subReqData.get(i);

