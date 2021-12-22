@@ -77,6 +77,9 @@ public class ActiveScanner implements IScannerCheck {
                 IHttpRequestResponse req = re.getValue();
                 String scantime = String.valueOf(re.getKey().getKey());
                 String mypayload = re.getKey().getValue();
+                IResponseInfo responseInfo = this.helpers.analyzeResponse(req.getResponse());
+                int httpResponseBodyOffset = responseInfo.getBodyOffset();
+                int httpResponseBodyLength = req.getResponse().length - httpResponseBodyOffset;
                 ExtensionTab.ReqTableData currentData = new ExtensionTab.ReqTableData(true,
                         ReqDocumentListTree,
                         httpRequestURL.toString(),
@@ -85,7 +88,7 @@ public class ActiveScanner implements IScannerCheck {
                         req,
                         paramer,
                         mypayload,
-                        String.valueOf(req.getResponse().length),
+                        String.valueOf(httpResponseBodyLength),
                         scantime
                 );
 
