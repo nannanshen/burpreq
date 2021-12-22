@@ -31,7 +31,24 @@ public class ActiveScanner implements IScannerCheck {
 
     @Override
     public List<IScanIssue> doActiveScan(IHttpRequestResponse httpRequestResponse, IScannerInsertionPoint insertionPoint) {
-        String paramer = JOptionPane.showInputDialog(null, "请输入要测试的参数：\n", "参数", JOptionPane.PLAIN_MESSAGE);
+        ArrayList paraList = new ArrayList();
+        for (IParameter p : BurpExtender.getHelpers().analyzeRequest(httpRequestResponse.getRequest()).getParameters()) {
+            if(p.getType() == 2){
+                continue;
+            }
+            paraList.add(p.getName());
+        }
+        if(paraList.size()<1){
+            return null;
+        }
+        Object[] options= new Object[paraList.size()];
+        for(int i=0;i<paraList.size();i++){
+            options[i] = paraList.get(i);
+        }
+        Object myoption = JOptionPane.showInputDialog(null,"选择要测试的参数","参数",JOptionPane.QUESTION_MESSAGE,
+                null,options,options[0]);
+        String paramer = String.valueOf(myoption);
+        //String paramer = JOptionPane.showInputDialog(null, "请输入要测试的参数：\n", "参数", JOptionPane.PLAIN_MESSAGE);
         if(paramer==null || paramer.equals("")){
             return null;
         }
