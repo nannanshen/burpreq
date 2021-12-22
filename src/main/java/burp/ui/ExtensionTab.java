@@ -264,6 +264,7 @@ public class ExtensionTab extends AbstractTableModel implements ITab, IMessageEd
                 if (dataEntry.isSubData) {
                     dataEntry.parentListTree.getSubReqData().remove(dataEntry);
                     ExtensionTab.ReqTable.this.tableData.remove(row);
+                    dataEntry.parentListTree.setSize(dataEntry.parentListTree.getSize()-1);
                     int _id = ExtensionTab.ReqTable.this.tableData.size();
                     fireTableRowsDeleted(selfIndex, _id);
                 }else {
