@@ -3,15 +3,18 @@ import burp.application.ReqScanner;
 import burp.ui.ReqDocumentListTree;
 import burp.ui.ExtensionTab;
 import burp.utils.Constants;
+import burp.utils.Executor;
 
 import javax.swing.*;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 
 public class ActiveScanner implements IScannerCheck {
     private final ReqScanner ReqScanner;
+    private IParameter pa = null;
 
     public ActiveScanner() {
         this.ReqScanner = new ReqScanner();
@@ -32,10 +35,20 @@ public class ActiveScanner implements IScannerCheck {
             return null;
         }
         URL httpRequestURL = BurpExtender.getHelpers().analyzeRequest(httpRequestResponse).getUrl();
-        List<Map.Entry<Map.Entry<Float,String>, IHttpRequestResponse>> reqs = this.ReqScanner.detect(httpRequestResponse,paramer);
-        if(reqs == null){
+        for (IParameter p : BurpExtender.getHelpers().analyzeRequest(httpRequestResponse.getRequest()).getParameters()) {
+            if(p.getType() == 2){
+                continue;
+            }
+            if(paramer.equals(p.getName())){
+                pa = p;
+                break;
+            }
+        }
+        if(pa==null){
             return null;
         }
+
+
         ExtensionTab extensionTab = BurpExtender.getExtensionTab();
         ReqDocumentListTree ReqDocumentListTree = new ReqDocumentListTree(extensionTab);
         ExtensionTab.ReqTableData mainReqData = new ExtensionTab.ReqTableData(false,
@@ -53,24 +66,35 @@ public class ActiveScanner implements IScannerCheck {
         ReqDocumentListTree.setMainReqData(mainReqData);
         ReqDocumentListTree.setSubReqData(subReqData);
         extensionTab.add(ReqDocumentListTree);
-        for(Map.Entry<Map.Entry<Float,String>, IHttpRequestResponse> re : reqs){
-            IHttpRequestResponse req = re.getValue();
-            String scantime = String.valueOf(re.getKey().getKey());
-            String payload = re.getKey().getValue();
-            ExtensionTab.ReqTableData currentData = new ExtensionTab.ReqTableData(true,
-                    ReqDocumentListTree,
-                    httpRequestURL.toString(),
-                    String.valueOf(helpers.analyzeResponse(req.getResponse()).getStatusCode()),
-                    String.valueOf(helpers.analyzeRequest(req).getMethod()),
-                    req,
-                    paramer,
-                    payload,
-                    String.valueOf(req.getResponse().length),
-                    scantime
-                    );
 
-            subReqData.add(currentData);
+
+        for(String payload : Constants.payloads){
+            CompletableFuture.supplyAsync(() -> {
+                Map.Entry<Map.Entry<Float,String>, IHttpRequestResponse> re = this.ReqScanner.detect(pa,httpRequestResponse,paramer,payload);
+                if(re == null){
+                    return null;
+                }
+                IHttpRequestResponse req = re.getValue();
+                String scantime = String.valueOf(re.getKey().getKey());
+                String mypayload = re.getKey().getValue();
+                ExtensionTab.ReqTableData currentData = new ExtensionTab.ReqTableData(true,
+                        ReqDocumentListTree,
+                        httpRequestURL.toString(),
+                        String.valueOf(helpers.analyzeResponse(req.getResponse()).getStatusCode()),
+                        String.valueOf(helpers.analyzeRequest(req).getMethod()),
+                        req,
+                        paramer,
+                        mypayload,
+                        String.valueOf(req.getResponse().length),
+                        scantime
+                );
+
+                subReqData.add(currentData);
+                return null;
+            }, Executor.getExecutor());
         }
+
+
         //extensionTab.add(ReqDocumentListTree);
 
         return  null;

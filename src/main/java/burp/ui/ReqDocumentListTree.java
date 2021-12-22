@@ -11,6 +11,7 @@ public class ReqDocumentListTree {
     private ExtensionTab.ReqTableData mainReqData;
     private ArrayList<ExtensionTab.ReqTableData> subReqData;
     private Boolean expandStatus = false; // true = 展开, false = 收起
+    private int size = 0;
 
     public ReqDocumentListTree(ExtensionTab parent) {
         this.parent = parent;
@@ -18,6 +19,14 @@ public class ReqDocumentListTree {
 
     public void setSubReqData(ArrayList<ExtensionTab.ReqTableData> subReqData) {
         this.subReqData = subReqData;
+    }
+
+    public void setSize(int size) {
+        this.size = size;
+    }
+
+    public int getSize(){
+        return this.size;
     }
 
     public ExtensionTab.ReqTableData getMainReqData() {
@@ -42,8 +51,9 @@ public class ReqDocumentListTree {
 
             List<ExtensionTab.ReqTableData> ReqTableData = this.parent.getReqTable().getTableData();
             int selfIndex = ReqTableData.indexOf(this.mainReqData);
-
-            for (int i = 0; i < subReqData.size(); i++) {
+            int mysize = subReqData.size();
+            setSize(mysize);
+            for (int i = 0; i < mysize; i++) {
                 ExtensionTab.ReqTableData data = subReqData.get(i);
                 /*
                 if (i != subReqData.size() - 1) {
@@ -65,8 +75,8 @@ public class ReqDocumentListTree {
             this.mainReqData.setTreeStatus(Constants.TREE_STATUS_COLLAPSE);
             List<ExtensionTab.ReqTableData> ReqTableData = this.parent.getReqTable().getTableData();
             int selfIndex = ReqTableData.indexOf(this.mainReqData);
-
-            for (int i = 0; i < subReqData.size(); i++) {
+            int mysize = getSize();
+            for (int i = 0; i < mysize; i++) {
                 ReqTableData.remove(selfIndex + 1);
             }
             int _id = ReqTableData.size();
