@@ -21,7 +21,7 @@ public class Constants {
             "'+and+'1'='1",
             "'+or+'1'='1",
             "'+and+sleep(10)%23",
-            "+and+sleep(5)+-- "
+            "+and+sleep(5)--+"
     };
 
     static public Map<String, String > payloadsMap  = new HashMap<String, String>(){{
@@ -30,6 +30,6 @@ public class Constants {
         put("3","'+and+'1'='1");
         put("4","'+or+'1'='1");
         put("5","'+and+sleep(10)%23");
-        put("6","'+and+sleep(5)+-- ");
+        put("6","'+and+sleep(5)--+");
     }};
 }
