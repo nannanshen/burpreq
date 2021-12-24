@@ -49,7 +49,7 @@ public class ActiveScanner implements IScannerCheck {
                 null,options,options[0]);
         String paramer = String.valueOf(myoption);
         //String paramer = JOptionPane.showInputDialog(null, "请输入要测试的参数：\n", "参数", JOptionPane.PLAIN_MESSAGE);
-        if(paramer==null || paramer.equals("")){
+        if(paramer==null || paramer.equals("null") || paramer.equals("")){
             return null;
         }
         URL httpRequestURL = BurpExtender.getHelpers().analyzeRequest(httpRequestResponse).getUrl();
