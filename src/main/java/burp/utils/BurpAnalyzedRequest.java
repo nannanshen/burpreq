@@ -88,10 +88,10 @@ public class BurpAnalyzedRequest {
 
         List<String> newHeaders = new ArrayList<>();
         newHeaders = this.analyzeRequest().getHeaders();
-
+        String requestBody = this.customBurpHelpers.getHttpRequestBody(this.requestResponse().getRequest());
 
         // 数据处理
-        if (this.analyzeRequest().getContentType() == 4) {
+        if (this.analyzeRequest().getContentType() == 4 && requestBody.contains(p.getName())) {
             // POST请求包提交的数据为json时的处理
             newRequest = this.buildHttpMessage(p, payload);
         } else {
